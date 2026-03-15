@@ -1,6 +1,6 @@
 package me.modmuss50.svw;
 
-import me.modmuss50.svw.blocks.BlockPortal;
+import me.modmuss50.svw.blocks.SimpleVoidWorldBlocks;
 import me.modmuss50.svw.proxy.CommonProxy;
 import me.modmuss50.svw.world.VoidWorldProvider;
 import net.minecraft.block.Block;
@@ -20,7 +20,6 @@ import reborncore.common.util.RebornCraftingHelper;
 @Mod(modid = "simplevoidworld", name = "SimpleVoidWorld", version = "@MODVERSION@", dependencies = "required-after:reborncore")
 public class SimpleVoidWorld {
 
-	public static Block portal;
 	public static VoidTab creativeTab;
 
 	@SidedProxy(clientSide = "me.modmuss50.svw.proxy.ClientProxy", serverSide = "me.modmuss50.svw.proxy.CommonProxy")
@@ -32,9 +31,6 @@ public class SimpleVoidWorld {
 		Config.load(event.getSuggestedConfigurationFile());
 
 		creativeTab = new VoidTab();
-		portal = new BlockPortal();
-		RebornRegistry.registerBlock(portal, "simplevoidworld:portal");
-
 		proxy.init();
 
 		type = DimensionType.register("simplevoidworld", "void", Config.dimID, VoidWorldProvider.class, false);
@@ -53,7 +49,7 @@ public class SimpleVoidWorld {
 
 		@Override
 		public ItemStack getTabIconItem() {
-			return new ItemStack(portal);
+			return new ItemStack(SimpleVoidWorldBlocks.portal);
 		}
 	}
 }

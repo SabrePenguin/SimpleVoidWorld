@@ -1,7 +1,7 @@
 package me.modmuss50.svw.world;
 
 import me.modmuss50.svw.Config;
-import me.modmuss50.svw.SimpleVoidWorld;
+import me.modmuss50.svw.blocks.SimpleVoidWorldBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -28,7 +28,7 @@ public class WorldTeleporter extends Teleporter {
 			BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos(pos.getX(), 0, pos.getZ());
 			for (int y = 0; y < 256; y++) {
 				mutableBlockPos.setY(y);
-				if (world.getBlockState(mutableBlockPos).getBlock() == SimpleVoidWorld.portal) {
+				if (world.getBlockState(mutableBlockPos).getBlock() == SimpleVoidWorldBlocks.portal) {
 					pos = new BlockPos(pos.getX(), y + 1, pos.getZ());
 					foundBlock = true;
 					break;
@@ -45,7 +45,7 @@ public class WorldTeleporter extends Teleporter {
 		if (world.provider.getDimension() == Config.dimID) {
 			//TODO look around for a free space so it doesnt place in a base?
 			pos = new BlockPos(pos.getX(), 64, pos.getZ());
-			if (world.getBlockState(pos).getBlock() != SimpleVoidWorld.portal) {
+			if (world.getBlockState(pos).getBlock() != SimpleVoidWorldBlocks.portal) {
 				int color = world.rand.nextInt(15);
 				for (int x = -3; x < 4; x++) {
 					for (int z = -3; z < 4; z++) {
@@ -55,7 +55,7 @@ public class WorldTeleporter extends Teleporter {
 
 					}
 				}
-				world.setBlockState(pos, SimpleVoidWorld.portal.getDefaultState());
+				world.setBlockState(pos, SimpleVoidWorldBlocks.portal.getDefaultState());
 				for(EnumFacing facing : EnumFacing.HORIZONTALS){
 					world.setBlockState(pos.up().offset(facing), Blocks.TORCH.getDefaultState());
 				}

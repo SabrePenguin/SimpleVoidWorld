@@ -20,6 +20,7 @@ public class BlockPortal extends Block {
 	public BlockPortal() {
 		super(Material.PORTAL);
 		setCreativeTab(CreativeTabs.MISC);
+		setRegistryName("simplevoidworld:portal");
 		setUnlocalizedName("simplevoidworld:portal");
 		setCreativeTab(SimpleVoidWorld.creativeTab);
 		setHardness(5.0F);
