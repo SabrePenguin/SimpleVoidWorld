@@ -43,8 +43,6 @@ public class SimpleVoidWorld {
 
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
-		RebornCraftingHelper.addShapedOreRecipe(new ItemStack(portal), "OEO", "EDE", "OEO", 'O',
-			Blocks.OBSIDIAN, 'E', Items.ENDER_EYE, 'D', Blocks.DIAMOND_BLOCK);
 	}
 
 	public static class VoidTab extends CreativeTabs {
