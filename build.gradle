@@ -56,9 +56,6 @@ group = 'SimpleVoidWorld'
 
 
 dependencies {
-	compile('RebornCore:RebornCore-1.12:+:dev') {
-		transitive = false
-	}
 }
 
 processResources

@@ -14,10 +14,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import reborncore.RebornRegistry;
-import reborncore.common.util.RebornCraftingHelper;
 
-@Mod(modid = "simplevoidworld", name = "SimpleVoidWorld", version = "@MODVERSION@", dependencies = "required-after:reborncore")
+@Mod(modid = "simplevoidworld", name = "SimpleVoidWorld", version = "@MODVERSION@")
 public class SimpleVoidWorld {
 
 	public static VoidTab creativeTab;
