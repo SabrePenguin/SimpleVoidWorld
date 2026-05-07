@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import reborncore.RebornRegistry;
 import reborncore.common.util.CraftingHelper;
 
-@Mod(modid = "simplevoidworld", name = "SimpleVoidWorld", version = "@MODVERSION@", dependencies = "required-after:reborncore")
+@Mod(modid = "simplevoidworld", name = "SimpleVoidWorld", version = "@MODVERSION@")
 public class SimpleVoidWorld {
 
 	public static Block portal;
