@@ -1,7 +1,7 @@
 [{
-  "modid": "simplevoidworld",
-  "name": "Simple Void World",
-  "description": "This is a very simple mod that adds a block that takes the player to a void world.",
+  "modid": "$modid",
+  "name": "$modname",
+  "description": "This is a slightly less simple mod that adds a block that takes the player to a void world.",
   "version": "$version",
   "mcversion": "$mcversion",
   "logoFile": "assets/simplevoidworld/textures/logo.png",

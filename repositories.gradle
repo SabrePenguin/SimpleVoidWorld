@@ -1,0 +1,8 @@
+// Add any additional repositories for your dependencies here
+
+repositories {
+    maven {
+        name = "Modmuss50"
+        url = "http://maven.modmuss50.me/"
+    }
+}
