@@ -10,6 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
 
+import javax.annotation.Nullable;
+
 public class WorldTeleporter extends Teleporter {
 
 	BlockPos pos;
@@ -43,6 +45,10 @@ public class WorldTeleporter extends Teleporter {
 
 		}
 		if (world.provider.getDimension() == Config.dimID) {
+			BlockPos result = nearestBlock();
+			if (result != null) {
+				pos = result;
+			}
 			//TODO look around for a free space so it doesnt place in a base?
 			pos = new BlockPos(pos.getX(), 64, pos.getZ());
 			if (world.getBlockState(pos).getBlock() != SimpleVoidWorldBlocks.portal) {
@@ -68,5 +74,37 @@ public class WorldTeleporter extends Teleporter {
 		entityIn.motionY = 0.0D;
 		entityIn.motionZ = 0.0D;
 
+	}
+
+	@SuppressWarnings("ConstantConditions")
+	@Nullable
+	private BlockPos nearestBlock() {
+		int radius = Config.portalRadius;
+		int originalX = pos.getX();
+		int originalZ = pos.getZ();
+		BlockPos.MutableBlockPos mutPos = new BlockPos.MutableBlockPos(originalX, 64, originalZ);
+		for (int y = 0; y <= radius; y++) {
+			for (int x = -radius; x <= radius; x++) {
+				for (int z = -radius; z <= radius; z++) {
+					mutPos.setPos(originalX + x, 64 + y, originalZ + z);
+					if (world.getBlockState(mutPos).getBlock() == SimpleVoidWorldBlocks.portal) {
+						mutPos.setY(mutPos.getY());
+						return mutPos;
+					}
+				}
+			}
+		}
+		for (int y = -1; y >= -radius; y--) {
+			for (int x = -radius; x <= radius; x++) {
+				for (int z = -radius; z <= radius; z++) {
+					mutPos.setPos(originalX + x, 64 + y, originalZ + z);
+					if (world.getBlockState(mutPos).getBlock() == SimpleVoidWorldBlocks.portal) {
+						mutPos.setY(mutPos.getY());
+						return mutPos;
+					}
+				}
+			}
+		}
+		return null;
 	}
 }

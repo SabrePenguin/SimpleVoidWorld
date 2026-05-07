@@ -17,6 +17,9 @@ public class Config {
 	public static boolean respawn = true;
 	public static boolean creatureSpawn = true;
 
+	public static int portalRadius = 8;
+	public static boolean portalAtY64 = true;
+
 	public static void load(File configFile) {
 		config = new Configuration(configFile);
 		config.load();
@@ -28,6 +31,9 @@ public class Config {
 
 		respawn = config.get(CATEGORY_TWEAKS, "Respawn", false, "When true this allows the player to respawn in this dimension").getBoolean();
 		creatureSpawn = config.get(CATEGORY_TWEAKS, "CreatureSpawn", false, "When true this allows creatures to spawn in this dimension").getBoolean();
+
+		portalRadius = config.getInt(CATEGORY_TWEAKS, "Radius", 8, 0, 64, "The radius to search from the position for a portal");
+		portalAtY64 = config.get(CATEGORY_TWEAKS, "Portal Default Height", true, "When true this sets the default height of the portal to 64.").getBoolean();
 
 		config.save();
 	}
