@@ -11,6 +11,5 @@
     "modmuss50",
     "Prospector"
   ],
-  "credits": "*Insert Thank you message here*",
-  "dependencies": ["reborncore"]
+  "credits": "*Insert Thank you message here*"
 }]
