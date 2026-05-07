@@ -19,6 +19,7 @@ public class Config {
 
 	public static int portalRadius = 8;
 	public static boolean portalAtY64 = true;
+	public static boolean backwardsCompat = false;
 
 	public static void load(File configFile) {
 		config = new Configuration(configFile);
@@ -34,6 +35,7 @@ public class Config {
 
 		portalRadius = config.getInt(CATEGORY_TWEAKS, "Radius", 8, 0, 64, "The radius to search from the position for a portal");
 		portalAtY64 = config.get(CATEGORY_TWEAKS, "Portal Default Height", true, "When true this sets the default height of the portal to 64.").getBoolean();
+		backwardsCompat = config.getBoolean(CATEGORY_TWEAKS, "Backwards Portal Compat", false, "When true this will search for old portals first.\nRequires portalAtY64 to be false.");
 
 		config.save();
 	}

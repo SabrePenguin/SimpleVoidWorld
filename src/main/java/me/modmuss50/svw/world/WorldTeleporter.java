@@ -27,8 +27,15 @@ public class WorldTeleporter extends Teleporter {
 	@Override
 	public void placeInPortal(Entity entityIn, float rotationYaw) {
 		if (world.provider.getDimension() != Config.dimID && entityIn instanceof EntityPlayer) {
-			BlockPos result = Config.portalAtY64 ? searchInRange(pos, 0, 256, Config.portalRadius) :
-					searchInRange(pos, Config.portalRadius);
+			BlockPos result;
+			if (Config.backwardsCompat && !Config.portalAtY64) {
+				result = searchInRange(pos, Config.portalRadius);
+				if (result == null)
+					result = searchInRange(pos, 0, 256, Config.portalRadius);
+			} else {
+			 	result = Config.portalAtY64 ? searchInRange(pos, 0, 256, Config.portalRadius) :
+						searchInRange(pos, Config.portalRadius);
+			}
 			if (result != null) {
 				pos = result.toImmutable();
 			} else {
@@ -52,7 +59,14 @@ public class WorldTeleporter extends Teleporter {
 
 		}
 		if (world.provider.getDimension() == Config.dimID) {
-			BlockPos result = Config.portalAtY64 ? searchInRange(pos, 64, 8) : searchInRange(pos, 8);
+			BlockPos result;
+			if (Config.backwardsCompat && !Config.portalAtY64) {
+				result = searchInRange(pos, 8);
+				if (result == null)
+					result = searchInRange(pos, 64, 8);
+			} else {
+				result = Config.portalAtY64 ? searchInRange(pos, 64, 8) : searchInRange(pos, 8);
+			}
 			if (result != null) {
 				pos = result.toImmutable();
 			} else {
