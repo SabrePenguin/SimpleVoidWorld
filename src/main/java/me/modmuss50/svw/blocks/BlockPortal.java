@@ -2,6 +2,7 @@ package me.modmuss50.svw.blocks;
 
 import me.modmuss50.svw.Config;
 import me.modmuss50.svw.SimpleVoidWorld;
+import me.modmuss50.svw.Tags;
 import me.modmuss50.svw.world.WorldTeleporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -20,8 +21,8 @@ public class BlockPortal extends Block {
 	public BlockPortal() {
 		super(Material.PORTAL);
 		setCreativeTab(CreativeTabs.MISC);
-		setRegistryName("simplevoidworld:portal");
-		setUnlocalizedName("simplevoidworld:portal");
+		setRegistryName(Tags.MODID, "portal");
+		setTranslationKey(Tags.MODID + ".portal");
 		setCreativeTab(SimpleVoidWorld.creativeTab);
 		setHardness(5.0F);
 		setResistance(2000.0F);

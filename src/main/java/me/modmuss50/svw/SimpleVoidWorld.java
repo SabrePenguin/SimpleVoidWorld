@@ -9,7 +9,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = "simplevoidworld", name = "SimpleVoidWorld", version = "@MODVERSION@")
+@Mod(modid = Tags.MODID, name = Tags.MODNAME, version = Tags.VERSION)
 public class SimpleVoidWorld {
 
 	public static VoidTab creativeTab;
@@ -33,7 +33,7 @@ public class SimpleVoidWorld {
 		}
 
 		@Override
-		public ItemStack getTabIconItem() {
+		public ItemStack createIcon() {
 			return new ItemStack(SimpleVoidWorldBlocks.portal);
 		}
 	}
