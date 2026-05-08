@@ -1,6 +1,6 @@
 package me.modmuss50.svw.blocks;
 
-import me.modmuss50.svw.Config;
+import me.modmuss50.svw.SVWConfig;
 import me.modmuss50.svw.SimpleVoidWorld;
 import me.modmuss50.svw.Tags;
 import me.modmuss50.svw.world.WorldTeleporter;
@@ -33,8 +33,8 @@ public class BlockPortal extends Block {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand,
 	                                EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote && !playerIn.isSneaking()) {
-			if (worldIn.provider.getDimension() != Config.dimID) {
-				FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().transferPlayerToDimension((EntityPlayerMP) playerIn, Config.dimID, new WorldTeleporter(playerIn.getServer().getWorld(Config.dimID), pos));
+			if (worldIn.provider.getDimension() != SVWConfig.ids.dimID) {
+				FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().transferPlayerToDimension((EntityPlayerMP) playerIn, SVWConfig.ids.dimID, new WorldTeleporter(playerIn.getServer().getWorld(SVWConfig.ids.dimID), pos));
 			} else {
 				FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().transferPlayerToDimension((EntityPlayerMP) playerIn, 0, new WorldTeleporter(playerIn.getServer().getWorld(0), pos));
 			}
@@ -45,7 +45,7 @@ public class BlockPortal extends Block {
 
 	@Override
 	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-		if(worldIn.provider.getDimension() == Config.dimID){
+		if(worldIn.provider.getDimension() == SVWConfig.ids.dimID){
 			return 1000F;
 		}
 		return super.getBlockHardness(blockState, worldIn, pos);

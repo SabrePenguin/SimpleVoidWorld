@@ -1,6 +1,6 @@
 package me.modmuss50.svw.world;
 
-import me.modmuss50.svw.Config;
+import me.modmuss50.svw.SVWConfig;
 import me.modmuss50.svw.blocks.SimpleVoidWorldBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,15 +26,15 @@ public class WorldTeleporter extends Teleporter {
 
 	@Override
 	public void placeInPortal(Entity entityIn, float rotationYaw) {
-		if (world.provider.getDimension() != Config.dimID && entityIn instanceof EntityPlayer) {
+		if (world.provider.getDimension() != SVWConfig.ids.dimID && entityIn instanceof EntityPlayer) {
 			BlockPos result;
-			if (Config.backwardsCompat && !Config.portalAtY64) {
-				result = searchInRange(pos, Config.portalRadius);
+			if (SVWConfig.tweaks.compatibility.backwardsCompat && !SVWConfig.tweaks.compatibility.portalAtY64) {
+				result = searchInRange(pos, SVWConfig.tweaks.portalRadius);
 				if (result == null)
-					result = searchInRange(pos, 0, 256, Config.portalRadius);
+					result = searchInRange(pos, 0, 256, SVWConfig.tweaks.portalRadius);
 			} else {
-			 	result = Config.portalAtY64 ? searchInRange(pos, 0, 256, Config.portalRadius) :
-						searchInRange(pos, Config.portalRadius);
+			 	result = SVWConfig.tweaks.compatibility.portalAtY64 ? searchInRange(pos, 0, 256, SVWConfig.tweaks.portalRadius) :
+						searchInRange(pos, SVWConfig.tweaks.portalRadius);
 			}
 			if (result != null) {
 				pos = result.toImmutable();
@@ -58,20 +58,20 @@ public class WorldTeleporter extends Teleporter {
 			}
 
 		}
-		if (world.provider.getDimension() == Config.dimID) {
+		if (world.provider.getDimension() == SVWConfig.ids.dimID) {
 			BlockPos result;
-			if (Config.backwardsCompat && !Config.portalAtY64) {
-				result = searchInRange(pos, 8);
+			if (SVWConfig.tweaks.compatibility.backwardsCompat && !SVWConfig.tweaks.compatibility.portalAtY64) {
+				result = searchInRange(pos, SVWConfig.tweaks.portalRadius);
 				if (result == null)
-					result = searchInRange(pos, 64, 8);
+					result = searchInRange(pos, 64, SVWConfig.tweaks.portalRadius);
 			} else {
-				result = Config.portalAtY64 ? searchInRange(pos, 64, 8) : searchInRange(pos, 8);
+				result = SVWConfig.tweaks.compatibility.portalAtY64 ? searchInRange(pos, 64, SVWConfig.tweaks.portalRadius) : searchInRange(pos, SVWConfig.tweaks.portalRadius);
 			}
 			if (result != null) {
 				pos = result.toImmutable();
 			} else {
 				//TODO look around for a free space so it doesnt place in a base?
-				int y = Config.portalAtY64 ? 64 : pos.getY();
+				int y = SVWConfig.tweaks.compatibility.portalAtY64 ? 64 : pos.getY();
 				pos = new BlockPos(pos.getX(), y, pos.getZ());
 				if (world.getBlockState(pos).getBlock() != SimpleVoidWorldBlocks.portal) {
 					int color = world.rand.nextInt(15);
