@@ -1,5 +1,6 @@
 package me.modmuss50.svw.world;
 
+import me.modmuss50.svw.SVWConfig;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -9,8 +10,6 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.IChunkGenerator;
 
 import javax.annotation.Nullable;
-
-import me.modmuss50.svw.Config;
 
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class VoidChunkGenerator implements IChunkGenerator {
 
 	@Override
 	public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
-		if(Config.creatureSpawn){
+		if (SVWConfig.tweaks.creatureSpawn) {
 			Biome biome = this.world.getBiome(pos);
 			return biome.getSpawnableList(creatureType);
 		} else return null;

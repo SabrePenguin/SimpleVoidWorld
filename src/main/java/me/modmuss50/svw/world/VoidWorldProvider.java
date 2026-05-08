@@ -1,6 +1,6 @@
 package me.modmuss50.svw.world;
 
-import me.modmuss50.svw.Config;
+import me.modmuss50.svw.SVWConfig;
 import me.modmuss50.svw.SimpleVoidWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
@@ -23,12 +23,12 @@ public class VoidWorldProvider extends WorldProvider {
 
 	@Override
 	public boolean canRespawnHere() {
-		return Config.respawn;
+		return SVWConfig.tweaks.respawn;
 	}
 
 	@Override
 	public Vec3d getFogColor(float p_76562_1_, float p_76562_2_) {
-		if (Config.darkSky) {
+		if (SVWConfig.tweaks.darkSky) {
 			return new Vec3d(0D, 0D, 0D);
 		}
 		return super.getFogColor(p_76562_1_, p_76562_2_);
@@ -36,7 +36,7 @@ public class VoidWorldProvider extends WorldProvider {
 
 	@Override
 	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
-		if (Config.darkSky) {
+		if (SVWConfig.tweaks.darkSky) {
 			return new Vec3d(0D, 0D, 0D);
 		}
 		return super.getSkyColor(cameraEntity, partialTicks);
@@ -44,7 +44,7 @@ public class VoidWorldProvider extends WorldProvider {
 
 	@Override
 	public long getWorldTime() {
-		if (Config.eternalDay) {
+		if (SVWConfig.tweaks.eternalDay) {
 			return 6000;
 		}
 		return super.getWorldTime();
@@ -52,7 +52,7 @@ public class VoidWorldProvider extends WorldProvider {
 
 	@Override
 	public boolean isDaytime() {
-		if (Config.eternalDay) {
+		if (SVWConfig.tweaks.eternalDay) {
 			return true;
 		}
 		return super.isDaytime();
@@ -61,7 +61,7 @@ public class VoidWorldProvider extends WorldProvider {
 	@Nullable
 	@Override
 	public float[] calcSunriseSunsetColors(float celestialAngle, float partialTicks) {
-		if (Config.darkSky) {
+		if (SVWConfig.tweaks.darkSky) {
 			return null;
 		}
 		return super.calcSunriseSunsetColors(celestialAngle, partialTicks);
@@ -70,7 +70,7 @@ public class VoidWorldProvider extends WorldProvider {
 
 	public int getRespawnDimension(net.minecraft.entity.player.EntityPlayerMP player)
 	{
-		if(Config.respawn) return Config.dimID;
+		if (SVWConfig.tweaks.respawn) return SVWConfig.ids.dimID;
 		else return 0;
 	}
 

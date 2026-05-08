@@ -18,12 +18,10 @@ public class SimpleVoidWorld {
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event){
-		Config.load(event.getSuggestedConfigurationFile());
-
 		creativeTab = new VoidTab();
 
-		type = DimensionType.register("simplevoidworld", "void", Config.dimID, VoidWorldProvider.class, false);
-		DimensionManager.registerDimension(Config.dimID, type);
+		type = DimensionType.register("simplevoidworld", "void", SVWConfig.ids.dimID, VoidWorldProvider.class, false);
+		DimensionManager.registerDimension(SVWConfig.ids.dimID, type);
 	}
 
 	public static class VoidTab extends CreativeTabs {
