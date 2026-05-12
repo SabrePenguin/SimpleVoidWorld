@@ -1,5 +1,6 @@
 package me.modmuss50.svw.handlers;
 
+import me.modmuss50.svw.SVWConfig;
 import me.modmuss50.svw.Tags;
 import me.modmuss50.svw.world.CustomTimeData;
 import me.modmuss50.svw.world.VoidWorldProvider;
@@ -12,11 +13,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 public class WorldHandler {
 	@SubscribeEvent
 	public static void onWorldTick(TickEvent.WorldTickEvent event) {
-		if (event.phase == TickEvent.Phase.END && !event.world.isRemote) {
-			if (event.world.provider instanceof VoidWorldProvider) {
+		if (event.phase == TickEvent.Phase.END && !event.world.isRemote && !SVWConfig.tweaks.time.syncWorldTime) {
+			if (event.world.provider instanceof VoidWorldProvider provider) {
 				if (event.world.getGameRules().getBoolean("doDaylightCycle")) {
 					CustomTimeData data = CustomTimeData.get(event.world);
-					data.advancedTime();
 					event.world.setWorldTime(data.getTime());
 				}
 			}

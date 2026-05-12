@@ -15,6 +15,10 @@ public class CustomTimeData extends WorldSavedData {
 		super(NAME);
 	}
 
+	public CustomTimeData(String name) {
+		super(name);
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		this.time = nbt.getLong("time");

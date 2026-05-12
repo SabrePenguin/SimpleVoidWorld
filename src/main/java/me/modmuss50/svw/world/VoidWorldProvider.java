@@ -62,6 +62,23 @@ public class VoidWorldProvider extends WorldProvider {
 	}
 
 	@Override
+	public float calculateCelestialAngle(long worldTime, float partialTicks) {
+		double speedup = SVWConfig.tweaks.time.worldTimeModifier;
+		double effectiveTicks = (worldTime * speedup) + (partialTicks * speedup);
+		double d = (effectiveTicks % 24000)/ 24000 - 0.25;
+		if (d < 0) {
+			d += 1;
+		}
+		if (d > 1) {
+			d -= 1;
+		}
+		float f = (float) d;
+		float f1 = 1f - (float)((Math.cos(f * Math.PI) + 1) / 2);
+		f = f + (f1 - f) / 3;
+		return f;
+	}
+
+	@Override
 	public long getWorldTime() {
 		if (SVWConfig.tweaks.eternalDay) {
 			return 6000;
