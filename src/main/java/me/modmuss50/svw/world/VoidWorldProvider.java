@@ -1,16 +1,35 @@
 package me.modmuss50.svw.world;
 
+import mcp.MethodsReturnNonnullByDefault;
 import me.modmuss50.svw.SVWConfig;
 import me.modmuss50.svw.SimpleVoidWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class VoidWorldProvider extends WorldProvider {
+	private CustomTimeData cachedTime;
+	private long time = 0;
+
+	public CustomTimeData getCachedTime() {
+		if (cachedTime == null) {
+			cachedTime = CustomTimeData.get(world);
+		}
+		return cachedTime;
+	}
+
+	public void clearCachedTime() {
+		cachedTime = null;
+	}
+
 	@Override
 	public DimensionType getDimensionType() {
 		return SimpleVoidWorld.type;
@@ -47,7 +66,27 @@ public class VoidWorldProvider extends WorldProvider {
 		if (SVWConfig.tweaks.eternalDay) {
 			return 6000;
 		}
+		if (!SVWConfig.tweaks.time.syncWorldTime) {
+			if (world != null) {
+				return world.isRemote ? this.time : getCachedTime().getTime();
+			}
+		}
 		return super.getWorldTime();
+	}
+
+	@Override
+	public void setWorldTime(long time) {
+		if (!SVWConfig.tweaks.time.syncWorldTime && !SVWConfig.tweaks.eternalDay) {
+			if (world != null) {
+				if (world.isRemote) {
+					this.time = time;
+				} else {
+					getCachedTime().setTime(time);
+				}
+			}
+		} else {
+			super.setWorldTime(time);
+		}
 	}
 
 	@Override
@@ -68,7 +107,7 @@ public class VoidWorldProvider extends WorldProvider {
 	}
 
 
-	public int getRespawnDimension(net.minecraft.entity.player.EntityPlayerMP player)
+	public int getRespawnDimension(EntityPlayerMP player)
 	{
 		if (SVWConfig.tweaks.respawn) return SVWConfig.ids.dimID;
 		else return 0;
