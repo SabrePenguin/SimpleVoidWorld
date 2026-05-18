@@ -63,6 +63,14 @@ public class SVWConfig {
 			@Config.Comment("The speed of the time in the void world. Higher values are faster")
 			@Config.RangeDouble(min=0.1, max=10)
 			public double worldTimeModifier = 1.0;
+			@Config.Name("Locked time")
+			@Config.Comment({
+					"The time to lock the world to",
+					"\"It's High Noon\" must be false",
+					"Set to -1 to disable lockedTime"
+			})
+			@Config.RangeInt(min=-1)
+			public int lockedTime = -1;
 		}
 
 		public static class WeatherCategory {
