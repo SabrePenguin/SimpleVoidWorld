@@ -17,6 +17,8 @@ public class DecoupledWeatherWorldInfo extends DerivedWorldInfo {
 
 	@Override
 	public boolean isRaining() {
+		if (!SVWConfig.tweaks.weather.allowWeather)
+			return false;
 		if (syncWeather())
 			return super.isRaining();
 		else
@@ -49,6 +51,8 @@ public class DecoupledWeatherWorldInfo extends DerivedWorldInfo {
 
 	@Override
 	public boolean isThundering() {
+		if (!SVWConfig.tweaks.weather.allowWeather)
+			return false;
 		if (syncWeather())
 			return super.isThundering();
 		else

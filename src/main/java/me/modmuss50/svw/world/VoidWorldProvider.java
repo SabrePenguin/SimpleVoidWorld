@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.IChunkGenerator;
 
 import javax.annotation.Nullable;
@@ -155,4 +156,19 @@ public class VoidWorldProvider extends WorldProvider {
 		else return 0;
 	}
 
+	@Override
+	public boolean canDoRainSnowIce(Chunk chunk) {
+		if (!SVWConfig.tweaks.weather.allowWeather) {
+			return false;
+		}
+		return super.canDoRainSnowIce(chunk);
+	}
+
+	@Override
+	public boolean canDoLightning(Chunk chunk) {
+		if (!SVWConfig.tweaks.weather.allowWeather) {
+			return false;
+		}
+		return super.canDoLightning(chunk);
+	}
 }

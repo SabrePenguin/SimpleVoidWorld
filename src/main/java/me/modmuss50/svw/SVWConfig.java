@@ -69,6 +69,9 @@ public class SVWConfig {
 			@Config.Name("Sync World Weather")
 			@Config.Comment("When true the void world will match the overworld's weather")
 			public boolean syncWorldWeather = true;
+			@Config.Name("Allow Weather")
+			@Config.Comment("When false, the void world will never have weather, regardless of gamerule")
+			public boolean allowWeather = true;
 		}
 	}
 
