@@ -10,6 +10,7 @@ import net.minecraft.world.storage.WorldSavedData;
 public class CustomTimeData extends WorldSavedData {
 	private static final String NAME = "CUSTOM_WORLD_TIME";
 	private long time = 0;
+	private long lastCheckedTime = -1;
 
 	public CustomTimeData() {
 		super(NAME);
@@ -22,11 +23,15 @@ public class CustomTimeData extends WorldSavedData {
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		this.time = nbt.getLong("time");
+		if (nbt.hasKey("lastCheckedTime")) {
+			this.lastCheckedTime = nbt.getLong("lastCheckedTime");
+		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("time", time);
+		compound.setLong("lastCheckedTime", lastCheckedTime);
 		return compound;
 	}
 
@@ -39,6 +44,14 @@ public class CustomTimeData extends WorldSavedData {
 		this.markDirty();
 	}
 
+	public long getLastCheckedTime() {
+		return lastCheckedTime;
+	}
+
+	public void setLastCheckedTime(long lastCheckedTime) {
+		this.lastCheckedTime = lastCheckedTime;
+	}
+
 	public void advancedTime() {
 		this.time++;
 		this.markDirty();
@@ -48,8 +61,11 @@ public class CustomTimeData extends WorldSavedData {
 		MapStorage storage = world.getPerWorldStorage();
 		WorldSavedData data = storage.getOrLoadData(CustomTimeData.class, NAME);
 		if (data == null) {
-			data = new CustomTimeData();
-			storage.setData(NAME, data);
+			CustomTimeData customTimeData = new CustomTimeData();
+			if (!world.isRemote && world.getMinecraftServer() != null) {
+				customTimeData.setLastCheckedTime(world.getMinecraftServer().getWorld(0).getTotalWorldTime());
+			}
+			storage.setData(NAME, customTimeData);
 		}
 		if (data instanceof CustomTimeData instance) {
 			return instance;

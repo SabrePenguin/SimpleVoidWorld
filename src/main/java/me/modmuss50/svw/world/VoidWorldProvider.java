@@ -98,7 +98,11 @@ public class VoidWorldProvider extends WorldProvider {
 				if (world.isRemote) {
 					this.time = time;
 				} else {
-					getCachedTime().setTime(time);
+					CustomTimeData cached = getCachedTime();
+					cached.setTime(time);
+					if (world.getMinecraftServer() != null) {
+						cached.setLastCheckedTime(world.getMinecraftServer().getWorld(0).getTotalWorldTime());
+					}
 				}
 			}
 		} else {

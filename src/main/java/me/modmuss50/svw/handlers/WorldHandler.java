@@ -26,7 +26,16 @@ public class WorldHandler {
 	@SubscribeEvent
 	public static void onWorldLoad(WorldEvent.Load event) {
 		if (!event.getWorld().isRemote && event.getWorld().provider instanceof VoidWorldProvider provider) {
-			provider.getCachedTime();
+			CustomTimeData customTimeData = provider.getCachedTime();
+			if (event.getWorld().getMinecraftServer() != null) {
+				long currentOverworldTime = event.getWorld().getMinecraftServer().getWorld(0).getTotalWorldTime();
+				long lastSaved = customTimeData.getLastCheckedTime();
+				if (lastSaved != -1 && currentOverworldTime > lastSaved) {
+					long missedTicks = currentOverworldTime - lastSaved;
+					customTimeData.setTime(customTimeData.getTime() + missedTicks);
+				}
+				customTimeData.setLastCheckedTime(currentOverworldTime);
+			}
 		}
 	}
 
