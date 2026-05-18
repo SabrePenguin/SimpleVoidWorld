@@ -74,6 +74,7 @@ public class CustomTimeData extends WorldSavedData {
 				customTimeData.setLastCheckedTime(world.getMinecraftServer().getWorld(0).getTotalWorldTime());
 			}
 			storage.setData(NAME, customTimeData);
+			return customTimeData;
 		}
 		if (data instanceof CustomTimeData instance) {
 			return instance;
