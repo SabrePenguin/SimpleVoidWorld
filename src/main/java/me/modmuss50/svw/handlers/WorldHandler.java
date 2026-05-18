@@ -7,21 +7,9 @@ import me.modmuss50.svw.world.VoidWorldProvider;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 @Mod.EventBusSubscriber(modid = Tags.MODID)
 public class WorldHandler {
-	@SubscribeEvent
-	public static void onWorldTick(TickEvent.WorldTickEvent event) {
-		if (event.phase == TickEvent.Phase.END && !event.world.isRemote && !SVWConfig.tweaks.time.syncWorldTime) {
-			if (event.world.provider instanceof VoidWorldProvider provider) {
-				if (event.world.getGameRules().getBoolean("doDaylightCycle")) {
-					CustomTimeData data = CustomTimeData.get(event.world);
-					event.world.setWorldTime(data.getTime());
-				}
-			}
-		}
-	}
 
 	@SubscribeEvent
 	public static void onWorldLoad(WorldEvent.Load event) {
@@ -32,7 +20,9 @@ public class WorldHandler {
 				long lastSaved = customTimeData.getLastCheckedTime();
 				if (lastSaved != -1 && currentOverworldTime > lastSaved) {
 					long missedTicks = currentOverworldTime - lastSaved;
-					customTimeData.setTime(customTimeData.getTime() + missedTicks);
+					double speedup = SVWConfig.tweaks.time.worldTimeModifier;
+					long adjustedTicks = (long) (missedTicks * speedup);
+					customTimeData.setTime(customTimeData.getTime() + adjustedTicks);
 				}
 				customTimeData.setLastCheckedTime(currentOverworldTime);
 			}

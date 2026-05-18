@@ -11,6 +11,7 @@ public class CustomTimeData extends WorldSavedData {
 	private static final String NAME = "CUSTOM_WORLD_TIME";
 	private long time = 0;
 	private long lastCheckedTime = -1;
+	private double accumulatedTime = 0;
 
 	public CustomTimeData() {
 		super(NAME);
@@ -26,12 +27,16 @@ public class CustomTimeData extends WorldSavedData {
 		if (nbt.hasKey("lastCheckedTime")) {
 			this.lastCheckedTime = nbt.getLong("lastCheckedTime");
 		}
+		if (nbt.hasKey("accumulatedTime")) {
+			this.accumulatedTime = nbt.getDouble("accumulatedTime");
+		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("time", time);
 		compound.setLong("lastCheckedTime", lastCheckedTime);
+		compound.setDouble("accumulatedTime", accumulatedTime);
 		return compound;
 	}
 
@@ -52,9 +57,12 @@ public class CustomTimeData extends WorldSavedData {
 		this.lastCheckedTime = lastCheckedTime;
 	}
 
-	public void advancedTime() {
-		this.time++;
-		this.markDirty();
+	public double getAccumulatedTime() {
+		return accumulatedTime;
+	}
+
+	public void setAccumulatedTime(double accumulatedTime) {
+		this.accumulatedTime = accumulatedTime;
 	}
 
 	public static CustomTimeData get(World world) {

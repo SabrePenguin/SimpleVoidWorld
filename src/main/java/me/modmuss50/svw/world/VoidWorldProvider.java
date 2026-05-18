@@ -18,6 +18,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class VoidWorldProvider extends WorldProvider {
 	private CustomTimeData cachedTime;
 	private long time = 0;
+	private double clientTicks = 0;
 
 	public CustomTimeData getCachedTime() {
 		if (cachedTime == null) {
@@ -64,7 +65,7 @@ public class VoidWorldProvider extends WorldProvider {
 	@Override
 	public float calculateCelestialAngle(long worldTime, float partialTicks) {
 		double speedup = SVWConfig.tweaks.time.worldTimeModifier;
-		double effectiveTicks = (worldTime * speedup) + (partialTicks * speedup);
+		double effectiveTicks = worldTime + (partialTicks * speedup);
 		double d = (effectiveTicks % 24000)/ 24000 - 0.25;
 		if (d < 0) {
 			d += 1;
@@ -96,10 +97,30 @@ public class VoidWorldProvider extends WorldProvider {
 		if (!SVWConfig.tweaks.time.syncWorldTime && !SVWConfig.tweaks.eternalDay) {
 			if (world != null) {
 				if (world.isRemote) {
-					this.time = time;
+					long currentTime = this.time;
+					if (time == currentTime + 1) {
+						double speedup = SVWConfig.tweaks.time.worldTimeModifier;
+						clientTicks += speedup;
+						long toAdd = (long) clientTicks;
+						clientTicks -= toAdd;
+						this.time += toAdd;
+					} else {
+						this.time = time;
+						this.clientTicks = 0;
+					}
 				} else {
 					CustomTimeData cached = getCachedTime();
-					cached.setTime(time);
+					long currentTime = cached.getTime();
+					if (time == currentTime + 1) {
+						double speedup = SVWConfig.tweaks.time.worldTimeModifier;
+						double total = cached.getAccumulatedTime() + speedup;
+						long toAdd = (long) total;
+						cached.setAccumulatedTime(total - toAdd);
+						cached.setTime(currentTime + toAdd);
+					} else {
+						cached.setTime(time);
+						cached.setAccumulatedTime(0);
+					}
 					if (world.getMinecraftServer() != null) {
 						cached.setLastCheckedTime(world.getMinecraftServer().getWorld(0).getTotalWorldTime());
 					}
