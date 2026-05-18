@@ -9,18 +9,18 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.lang.reflect.Field;
 
 @Mod.EventBusSubscriber(modid = Tags.MODID)
 public class WorldHandler {
 
-	private static final Field WORLD_INFO_FIELD;
+	@SuppressWarnings("deprecation")
+	private static final Field WORLD_INFO_FIELD = ReflectionHelper.findField(World.class, "worldInfo", "field_72986_A");
 
 	static {
-		WORLD_INFO_FIELD = ObfuscationReflectionHelper.findField(World.class, "worldInfo");
 		WORLD_INFO_FIELD.setAccessible(true);
 	}
 
