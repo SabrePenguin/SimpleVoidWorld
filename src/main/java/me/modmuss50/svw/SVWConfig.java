@@ -37,6 +37,7 @@ public class SVWConfig {
 		@Config.RangeInt(min = 0, max = 64)
 		public int portalRadius = 8;
 		public BackwardsCompatCategory compatibility = new BackwardsCompatCategory();
+		public TimeCategory time = new TimeCategory();
 
 		public static class BackwardsCompatCategory {
 			@Config.Name("Portal Default Height")
@@ -48,6 +49,19 @@ public class SVWConfig {
 					"Requires Portal Default Height to be false."
 			})
 			public boolean backwardsCompat = false;
+		}
+
+		public static class TimeCategory {
+			@Config.Name("Sync World Time")
+			@Config.Comment({
+					"When true the void world will match the overworld's time",
+					"\"It's High Noon\" must be false"
+			})
+			public boolean syncWorldTime = true;
+			@Config.Name("World Multiplier")
+			@Config.Comment("The speed of the time in the void world. Higher values are faster")
+			@Config.RangeDouble(min=0.1, max=10)
+			public double worldTimeModifier = 1.0;
 		}
 	}
 
