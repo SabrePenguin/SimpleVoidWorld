@@ -107,17 +107,19 @@ public class WorldTeleporter extends Teleporter {
 		int newYCenter = (minY + maxY) / 2;
 		BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(originalX, newYCenter, originalZ);
 		if (world.getBlockState(blockPos).getBlock() == SimpleVoidWorldBlocks.portal) {
-			return blockPos;
+			return blockPos.toImmutable();
 		}
 		BlockPos closest = null;
-		double closestDistance = radius * 2;
-		for (int i = 1; i <= radius; i++) {
-			for(int x = -i; x <= i; x++) {
-				for (int y = -i; y <= i; y++) {
-					for (int z = -i; z <= i; z++) {
-						if (Math.abs(z) != i && Math.abs(y) != i && Math.abs(x) != i)
+		double closestDistance = newYCenter;
+		for (int layer = 1; layer <= newYCenter; layer++) {
+			int xzShell = Math.min(layer, radius);
+			for (int x = -xzShell; x <= xzShell; x++) {
+				for (int z = -xzShell; z <= xzShell; z++) {
+					for (int y = newYCenter - layer; y <= newYCenter + layer; y++) {
+						if (Math.abs(x) != xzShell && Math.abs(z) != xzShell && (Math.abs(y) != newYCenter + layer || Math.abs(y) != newYCenter - layer))
 							continue;
-						blockPos.setPos(originalX + x, newYCenter + y, originalZ + z);
+						blockPos.setPos(originalX + x, y, originalZ + z);
+						world.getChunkProvider().provideChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
 						if (world.getBlockState(blockPos).getBlock() == SimpleVoidWorldBlocks.portal) {
 							double dist = getSquaredDistance(original, blockPos);
 							if (dist < closestDistance) {
