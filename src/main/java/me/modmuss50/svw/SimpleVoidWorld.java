@@ -2,6 +2,7 @@ package me.modmuss50.svw;
 
 import me.modmuss50.svw.blocks.SimpleVoidWorldBlocks;
 import me.modmuss50.svw.commands.VoidWorldTimeCommand;
+import me.modmuss50.svw.commands.VoidWorldWeatherCommand;
 import me.modmuss50.svw.world.VoidWorldProvider;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -29,6 +30,7 @@ public class SimpleVoidWorld {
 	@Mod.EventHandler
 	public void onServerStarting(FMLServerStartingEvent event) {
 		event.registerServerCommand(new VoidWorldTimeCommand());
+		event.registerServerCommand(new VoidWorldWeatherCommand());
 	}
 
 	public static class VoidTab extends CreativeTabs {

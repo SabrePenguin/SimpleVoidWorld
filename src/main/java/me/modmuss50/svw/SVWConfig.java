@@ -38,6 +38,7 @@ public class SVWConfig {
 		public int portalRadius = 8;
 		public BackwardsCompatCategory compatibility = new BackwardsCompatCategory();
 		public TimeCategory time = new TimeCategory();
+		public WeatherCategory weather = new WeatherCategory();
 
 		public static class BackwardsCompatCategory {
 			@Config.Name("Portal Default Height")
@@ -62,6 +63,15 @@ public class SVWConfig {
 			@Config.Comment("The speed of the time in the void world. Higher values are faster")
 			@Config.RangeDouble(min=0.1, max=10)
 			public double worldTimeModifier = 1.0;
+		}
+
+		public static class WeatherCategory {
+			@Config.Name("Sync World Weather")
+			@Config.Comment("When true the void world will match the overworld's weather")
+			public boolean syncWorldWeather = true;
+			@Config.Name("Allow Weather")
+			@Config.Comment("When false, the void world will never have weather, regardless of gamerule")
+			public boolean allowWeather = true;
 		}
 	}
 
