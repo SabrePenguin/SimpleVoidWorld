@@ -16,13 +16,13 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class VoidWorldProvider extends WorldProvider {
-	private CustomTimeData cachedTime;
+	private CustomDesyncedData cachedTime;
 	private long time = 0;
 	private double clientTicks = 0;
 
-	public CustomTimeData getCachedTime() {
+	public CustomDesyncedData getCachedTime() {
 		if (cachedTime == null) {
-			cachedTime = CustomTimeData.get(world);
+			cachedTime = CustomDesyncedData.get(world);
 		}
 		return cachedTime;
 	}
@@ -109,7 +109,7 @@ public class VoidWorldProvider extends WorldProvider {
 						this.clientTicks = 0;
 					}
 				} else {
-					CustomTimeData cached = getCachedTime();
+					CustomDesyncedData cached = getCachedTime();
 					long currentTime = cached.getTime();
 					if (time == currentTime + 1) {
 						double speedup = SVWConfig.tweaks.time.worldTimeModifier;

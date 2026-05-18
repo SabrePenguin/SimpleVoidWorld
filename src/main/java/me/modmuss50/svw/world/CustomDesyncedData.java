@@ -7,17 +7,17 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 
 @MethodsReturnNonnullByDefault
-public class CustomTimeData extends WorldSavedData {
-	private static final String NAME = "CUSTOM_WORLD_TIME";
+public class CustomDesyncedData extends WorldSavedData {
+	private static final String NAME = "CUSTOM_WORLD_DESYNC";
 	private long time = 0;
 	private long lastCheckedTime = -1;
 	private double accumulatedTime = 0;
 
-	public CustomTimeData() {
+	public CustomDesyncedData() {
 		super(NAME);
 	}
 
-	public CustomTimeData(String name) {
+	public CustomDesyncedData(String name) {
 		super(name);
 	}
 
@@ -65,18 +65,18 @@ public class CustomTimeData extends WorldSavedData {
 		this.accumulatedTime = accumulatedTime;
 	}
 
-	public static CustomTimeData get(World world) {
+	public static CustomDesyncedData get(World world) {
 		MapStorage storage = world.getPerWorldStorage();
-		WorldSavedData data = storage.getOrLoadData(CustomTimeData.class, NAME);
+		WorldSavedData data = storage.getOrLoadData(CustomDesyncedData.class, NAME);
 		if (data == null) {
-			CustomTimeData customTimeData = new CustomTimeData();
+			CustomDesyncedData customDesyncedData = new CustomDesyncedData();
 			if (!world.isRemote && world.getMinecraftServer() != null) {
-				customTimeData.setLastCheckedTime(world.getMinecraftServer().getWorld(0).getTotalWorldTime());
+				customDesyncedData.setLastCheckedTime(world.getMinecraftServer().getWorld(0).getTotalWorldTime());
 			}
-			storage.setData(NAME, customTimeData);
-			return customTimeData;
+			storage.setData(NAME, customDesyncedData);
+			return customDesyncedData;
 		}
-		if (data instanceof CustomTimeData instance) {
+		if (data instanceof CustomDesyncedData instance) {
 			return instance;
 		} else {
 			throw new RuntimeException("Not a void world");
