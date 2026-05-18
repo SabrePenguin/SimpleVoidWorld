@@ -110,18 +110,24 @@ public class WorldTeleporter extends Teleporter {
 			return blockPos.toImmutable();
 		}
 		BlockPos closest = null;
-		double closestDistance = newYCenter;
+		double closestDistance = 256;
 		for (int layer = 1; layer <= newYCenter; layer++) {
 			int xzShell = Math.min(layer, radius);
 			for (int x = -xzShell; x <= xzShell; x++) {
 				for (int z = -xzShell; z <= xzShell; z++) {
-					for (int y = newYCenter - layer; y <= newYCenter + layer; y++) {
-						if (Math.abs(x) != xzShell && Math.abs(z) != xzShell && (Math.abs(y) != newYCenter + layer || Math.abs(y) != newYCenter - layer))
+					for (int yOffset = -layer; yOffset <= layer; yOffset++) {
+						int y = yOffset + newYCenter;
+						if (y < minY || y > maxY)
+							continue;
+						boolean xEdge = Math.abs(x) != xzShell;
+						boolean zEdge = Math.abs(z) != xzShell;
+						boolean yEdge = Math.abs(yOffset) != layer;
+						if (xEdge && zEdge && yEdge)
 							continue;
 						blockPos.setPos(originalX + x, y, originalZ + z);
 						world.getChunkProvider().provideChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
 						if (world.getBlockState(blockPos).getBlock() == SimpleVoidWorldBlocks.portal) {
-							double dist = getSquaredDistance(original, blockPos);
+							double dist = getDistance(original, blockPos);
 							if (dist < closestDistance) {
 								closestDistance = dist;
 								closest = blockPos.toImmutable();
@@ -145,7 +151,7 @@ public class WorldTeleporter extends Teleporter {
 		return searchInRange(original, original.getY() - radius, original.getY() + radius, radius);
 	}
 
-	private double getSquaredDistance(BlockPos first, BlockPos second) {
+	private double getDistance(BlockPos first, BlockPos second) {
 		int xDist = Math.abs(first.getX() - second.getX());
 		int yDist = Math.abs(first.getY() - second.getY());
 		int zDist = Math.abs(first.getZ() - second.getZ());
