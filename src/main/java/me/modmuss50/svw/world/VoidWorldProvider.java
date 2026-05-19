@@ -66,6 +66,8 @@ public class VoidWorldProvider extends WorldProvider {
 	@Override
 	public float calculateCelestialAngle(long worldTime, float partialTicks) {
 		double speedup = SVWConfig.tweaks.time.worldTimeModifier;
+		if (SVWConfig.tweaks.time.lockedTime != -1)
+			speedup = 0;
 		double effectiveTicks = worldTime + (partialTicks * speedup);
 		double d = (effectiveTicks % 24000)/ 24000 - 0.25;
 		if (d < 0) {
@@ -85,6 +87,9 @@ public class VoidWorldProvider extends WorldProvider {
 		if (SVWConfig.tweaks.eternalDay) {
 			return 6000;
 		}
+		if (SVWConfig.tweaks.time.lockedTime != -1) {
+			return SVWConfig.tweaks.time.lockedTime;
+		}
 		if (!SVWConfig.tweaks.time.syncWorldTime) {
 			if (world != null) {
 				return world.isRemote ? this.time : getCachedTime().getTime();
@@ -95,7 +100,7 @@ public class VoidWorldProvider extends WorldProvider {
 
 	@Override
 	public void setWorldTime(long time) {
-		if (!SVWConfig.tweaks.time.syncWorldTime && !SVWConfig.tweaks.eternalDay) {
+		if (!SVWConfig.tweaks.time.syncWorldTime && !SVWConfig.tweaks.eternalDay && SVWConfig.tweaks.time.lockedTime == -1) {
 			if (world != null) {
 				if (world.isRemote) {
 					long currentTime = this.time;

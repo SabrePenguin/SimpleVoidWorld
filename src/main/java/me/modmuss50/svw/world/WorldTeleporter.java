@@ -37,7 +37,7 @@ public class WorldTeleporter extends Teleporter {
 						searchInRange(pos, SVWConfig.tweaks.portalRadius);
 			}
 			if (result != null) {
-				pos = result.toImmutable();
+				pos = result;
 			} else {
 				boolean foundBlock = false;
 				BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos(pos.getX(), 0, pos.getZ());
@@ -68,7 +68,7 @@ public class WorldTeleporter extends Teleporter {
 				result = SVWConfig.tweaks.compatibility.portalAtY64 ? searchInRange(pos, 64, SVWConfig.tweaks.portalRadius) : searchInRange(pos, SVWConfig.tweaks.portalRadius);
 			}
 			if (result != null) {
-				pos = result.toImmutable();
+				pos = result;
 			} else {
 				//TODO look around for a free space so it doesnt place in a base?
 				int y = SVWConfig.tweaks.compatibility.portalAtY64 ? 64 : pos.getY();
@@ -99,37 +99,63 @@ public class WorldTeleporter extends Teleporter {
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	private BlockPos.MutableBlockPos searchInRange(BlockPos original, int minY, int maxY, int radius) {
+	private BlockPos searchInRange(BlockPos original, int minY, int maxY, int radius) {
 		int originalX = original.getX();
 		int originalZ = original.getZ();
-		minY = Math.min(minY, 0);
-		maxY = Math.max(maxY, 255);
+		minY = Math.max(minY, 0);
+		maxY = Math.min(maxY, 255);
 		int newYCenter = (minY + maxY) / 2;
-		BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(original);
-		for (int x = -radius; x <= radius; x++) {
-			for (int z = -radius; z <= radius; z++) {
-				for (int y = newYCenter; y <= maxY; y++) {
-					blockPos.setPos(originalX + x, y, originalZ + z);
-					if (world.getBlockState(blockPos).getBlock() == SimpleVoidWorldBlocks.portal) {
-						return blockPos;
+		BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(originalX, newYCenter, originalZ);
+		if (world.getBlockState(blockPos).getBlock() == SimpleVoidWorldBlocks.portal) {
+			return blockPos.toImmutable();
+		}
+		BlockPos closest = null;
+		double closestDistance = 256;
+		for (int layer = 1; layer <= newYCenter; layer++) {
+			int xzShell = Math.min(layer, radius);
+			for (int x = -xzShell; x <= xzShell; x++) {
+				for (int z = -xzShell; z <= xzShell; z++) {
+					for (int yOffset = -layer; yOffset <= layer; yOffset++) {
+						int y = yOffset + newYCenter;
+						if (y < minY || y > maxY)
+							continue;
+						boolean xEdge = Math.abs(x) != xzShell;
+						boolean zEdge = Math.abs(z) != xzShell;
+						boolean yEdge = Math.abs(yOffset) != layer;
+						if (xEdge && zEdge && yEdge)
+							continue;
+						blockPos.setPos(originalX + x, y, originalZ + z);
+						world.getChunkProvider().provideChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
+						if (world.getBlockState(blockPos).getBlock() == SimpleVoidWorldBlocks.portal) {
+							double dist = getDistance(original, blockPos);
+							if (dist < closestDistance) {
+								closestDistance = dist;
+								closest = blockPos.toImmutable();
+							}
+						}
 					}
 				}
-				for (int y = newYCenter; y >= minY; y--) {
-					blockPos.setPos(originalX + x, y, originalZ + z);
-					if (world.getBlockState(blockPos).getBlock() == SimpleVoidWorldBlocks.portal) {
-						return blockPos;
-					}
-				}
+			}
+			if (closest != null) {
+				return closest;
 			}
 		}
 		return null;
 	}
 
-	private BlockPos.MutableBlockPos searchInRange(BlockPos original, int source, int radius) {
+	private BlockPos searchInRange(BlockPos original, int source, int radius) {
 		return searchInRange(original, source - radius, source + radius, radius);
 	}
 
-	private BlockPos.MutableBlockPos searchInRange(BlockPos original, int radius) {
+	private BlockPos searchInRange(BlockPos original, int radius) {
 		return searchInRange(original, original.getY() - radius, original.getY() + radius, radius);
+	}
+
+	private double getDistance(BlockPos first, BlockPos second) {
+		int xDist = Math.abs(first.getX() - second.getX());
+		int yDist = Math.abs(first.getY() - second.getY());
+		int zDist = Math.abs(first.getZ() - second.getZ());
+		long total = ((long) xDist * xDist) + ((long) yDist * yDist) + ((long) zDist * zDist);
+		return Math.sqrt(total);
 	}
 }
