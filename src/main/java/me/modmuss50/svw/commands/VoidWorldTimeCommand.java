@@ -21,6 +21,10 @@ public class VoidWorldTimeCommand extends CommandTime {
 
 	@Override
 	protected void setAllWorldTimes(MinecraftServer server, int time) {
+		if (SVWConfig.tweaks.time.syncWorldTime) {
+			super.setAllWorldTimes(server, time);
+			return;
+		}
 		boolean senderInVoid = commandSender.getEntityWorld().provider.getDimension() == SVWConfig.ids.dimID;
 		for (WorldServer world: server.worlds) {
 			boolean currentWorldVoid = world.provider.getDimension() == SVWConfig.ids.dimID;
@@ -31,6 +35,10 @@ public class VoidWorldTimeCommand extends CommandTime {
 
 	@Override
 	protected void incrementAllWorldTimes(MinecraftServer server, int amount) {
+		if (SVWConfig.tweaks.time.syncWorldTime) {
+			super.incrementAllWorldTimes(server, amount);
+			return;
+		}
 		boolean senderInVoid = commandSender.getEntityWorld().provider.getDimension() == SVWConfig.ids.dimID;
 		for (WorldServer world: server.worlds) {
 			boolean currentWorldVoid = world.provider.getDimension() == SVWConfig.ids.dimID;
