@@ -65,6 +65,8 @@ public class VoidWorldProvider extends WorldProvider {
 
 	@Override
 	public float calculateCelestialAngle(long worldTime, float partialTicks) {
+		if (SVWConfig.tweaks.time.syncWorldTime)
+			return super.calculateCelestialAngle(worldTime, partialTicks);
 		double speedup = SVWConfig.tweaks.time.worldTimeModifier;
 		if (SVWConfig.tweaks.time.lockedTime != -1)
 			speedup = 0;
