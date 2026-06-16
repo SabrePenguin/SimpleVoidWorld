@@ -42,8 +42,10 @@ public class WorldHandler {
 			}
 			try {
 				WorldInfo original = world.getWorldInfo();
-				DecoupledWeatherWorldInfo customInfo = new DecoupledWeatherWorldInfo(original, customDesyncedData);
-				WORLD_INFO_FIELD.set(world, customInfo);
+				if (!(original instanceof DecoupledWeatherWorldInfo)) {
+					DecoupledWeatherWorldInfo customInfo = new DecoupledWeatherWorldInfo(original, customDesyncedData);
+					WORLD_INFO_FIELD.set(world, customInfo);
+				}
 			} catch (IllegalAccessException e) {
 				throw new RuntimeException("Could not replace worldInfo");
 			}
