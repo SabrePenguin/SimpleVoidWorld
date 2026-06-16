@@ -178,4 +178,12 @@ public class VoidWorldProvider extends WorldProvider {
 		}
 		return super.canDoLightning(chunk);
 	}
+
+	@Override
+	public void updateWeather() {
+		if (SVWConfig.tweaks.weather.syncWorldWeather) {
+			return;
+		}
+		super.updateWeather();
+	}
 }

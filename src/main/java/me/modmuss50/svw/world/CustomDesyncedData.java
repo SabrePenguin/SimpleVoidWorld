@@ -73,6 +73,7 @@ public class CustomDesyncedData extends WorldSavedData {
 
 	public void setLastCheckedTime(long lastCheckedTime) {
 		this.lastCheckedTime = lastCheckedTime;
+		this.markDirty();
 	}
 
 	public double getAccumulatedTime() {
@@ -81,6 +82,7 @@ public class CustomDesyncedData extends WorldSavedData {
 
 	public void setAccumulatedTime(double accumulatedTime) {
 		this.accumulatedTime = accumulatedTime;
+		this.markDirty();
 	}
 
 	public static CustomDesyncedData get(World world) {
@@ -107,6 +109,7 @@ public class CustomDesyncedData extends WorldSavedData {
 
 	public void setRaining(boolean raining) {
 		isRaining = raining;
+		this.markDirty();
 	}
 
 	public int getRainTime() {
@@ -115,6 +118,7 @@ public class CustomDesyncedData extends WorldSavedData {
 
 	public void setRainTime(int rainTime) {
 		this.rainTime = rainTime;
+		this.markDirty();
 	}
 
 	public boolean isThundering() {
@@ -123,6 +127,7 @@ public class CustomDesyncedData extends WorldSavedData {
 
 	public void setThundering(boolean thundering) {
 		isThundering = thundering;
+		this.markDirty();
 	}
 
 	public int getThunderTime() {
@@ -131,6 +136,7 @@ public class CustomDesyncedData extends WorldSavedData {
 
 	public void setThunderTime(int thunderTime) {
 		this.thunderTime = thunderTime;
+		this.markDirty();
 	}
 
 	public int getClearTime() {
@@ -139,5 +145,6 @@ public class CustomDesyncedData extends WorldSavedData {
 
 	public void setClearTime(int clearTime) {
 		this.clearTime = clearTime;
+		this.markDirty();
 	}
 }
